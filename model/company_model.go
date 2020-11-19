@@ -29,3 +29,13 @@ type GetCompanyresponse struct {
 	ModifiedBy string `json:"modified_by"`
 	IsDeleted  bool   `json:"is_deleted"`
 }
+
+type ShowCompanyresponse struct {
+	Id         string `json:"id"`
+	Name       string `json:"name"`
+	CreatedAt  int64  `json:"created_at"`
+	ModifiedAt int64  `json:"modified_at"`
+	CreatedBy  string `json:"created_by"`
+	ModifiedBy string `json:"modified_by"`
+	IsDeleted  bool   `json:"is_deleted"`
+}

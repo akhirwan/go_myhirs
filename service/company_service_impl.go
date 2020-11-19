@@ -61,3 +61,19 @@ func (service *companyServiceImpl) List() (responses []model.GetCompanyresponse)
 	}
 	return responses
 }
+
+func (service *companyServiceImpl) Detail() (responses []model.ShowCompanyresponse) {
+	companies := service.CompanyRepository.Show()
+	for _, company := range companies {
+		responses = append(responses, model.ShowCompanyresponse{
+			Id:         company.Id,
+			Name:       company.Name,
+			CreatedAt:  company.CreatedAt,
+			ModifiedAt: company.ModifiedAt,
+			CreatedBy:  company.CreatedBy,
+			ModifiedBy: company.ModifiedBy,
+			IsDeleted:  company.IsDeleted,
+		})
+	}
+	return responses
+}

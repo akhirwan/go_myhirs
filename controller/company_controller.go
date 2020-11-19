@@ -4,6 +4,7 @@ import (
 	"api_go/exception"
 	"api_go/model"
 	"api_go/service"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -20,6 +21,7 @@ func NewCompanyController(companyService *service.CompanyService) CompanyControl
 func (controller *CompanyController) Route(app *fiber.App) {
 	app.Post("api/company", controller.Create)
 	app.Get("api/companies", controller.List)
+	app.Get("api/company", controller.Detail)
 }
 
 func (controller *CompanyController) Create(c *fiber.Ctx) error {
@@ -44,5 +46,15 @@ func (controller *CompanyController) List(c *fiber.Ctx) error {
 		Code:   200,
 		Status: "OK",
 		Data:   responses,
+	})
+}
+
+func (controller *CompanyController) Detail(c *fiber.Ctx) error {
+	responses := controller.CompanyService.Detail()
+	fmt.Println(c.FormValue("id"), responses)
+	return c.JSON(model.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   c.FormValue("id"),
 	})
 }
