@@ -61,11 +61,12 @@ func (repository *companyRepositoryImpl) FindAll() (companies []entity.Company) 
 	return companies
 }
 
-func (repository *companyRepositoryImpl) Show() (companies []entity.Company) {
+func (repository *companyRepositoryImpl) Show(id string) (companies []entity.Company) {
 	ctx, cancel := config.NewMongoContext()
 	defer cancel()
 
-	cursor, err := repository.Collection.Find(ctx, bson.M{})
+	// cursor, err := repository.Collection.Find(ctx, bson.M{})
+	cursor, err := repository.Collection.Find(ctx, bson.M{"_id": id})
 	exception.PanicIfNeeded(err)
 
 	var documents []bson.M

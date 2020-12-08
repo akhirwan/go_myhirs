@@ -21,7 +21,9 @@ func NewCompanyController(companyService *service.CompanyService) CompanyControl
 func (controller *CompanyController) Route(app *fiber.App) {
 	app.Post("api/company", controller.Create)
 	app.Get("api/companies", controller.List)
-	app.Get("api/company", controller.Detail)
+	app.Get("api/company/:id", controller.Detail)
+	app.Put("api/company", controller.Edit)
+	app.Put("api/company/:id", controller.Delete)
 }
 
 func (controller *CompanyController) Create(c *fiber.Ctx) error {
@@ -34,27 +36,53 @@ func (controller *CompanyController) Create(c *fiber.Ctx) error {
 
 	response := controller.CompanyService.Create(request)
 	return c.JSON(model.WebResponse{
-		Code:   200,
-		Status: "OK",
-		Data:   response,
+		Code:    200,
+		Status:  "OK",
+		Message: "Insert Company Successfull",
+		Data:    response,
 	})
 }
 
 func (controller *CompanyController) List(c *fiber.Ctx) error {
 	responses := controller.CompanyService.List()
 	return c.JSON(model.WebResponse{
-		Code:   200,
-		Status: "OK",
-		Data:   responses,
+		Code:    200,
+		Status:  "OK",
+		Message: "Get Companies Data Successfull",
+		Data:    responses,
 	})
 }
 
 func (controller *CompanyController) Detail(c *fiber.Ctx) error {
-	responses := controller.CompanyService.Detail()
-	fmt.Println(c.FormValue("id"), responses)
+	compId := c.Params("id")
+	responses := controller.CompanyService.Detail(compId)
+	fmt.Println(responses, compId)
+
 	return c.JSON(model.WebResponse{
-		Code:   200,
-		Status: "OK",
-		Data:   c.FormValue("id"),
+		Code:    200,
+		Status:  "OK",
+		Message: "Get Detail Company Successfull",
+		Data:    responses,
+	})
+}
+
+func (controller *CompanyController) Edit(c *fiber.Ctx) error {
+	return c.JSON(model.WebResponse{
+		Code:    200,
+		Status:  "OK",
+		Message: "Update Company Successfull",
+		Data:    "response",
+	})
+}
+
+func (controller *CompanyController) Delete(c *fiber.Ctx) error {
+	compId := c.Params("id")
+	fmt.Println(compId)
+
+	return c.JSON(model.WebResponse{
+		Code:    200,
+		Status:  "OK",
+		Message: "Delete Company Successfull",
+		Data:    "response",
 	})
 }
