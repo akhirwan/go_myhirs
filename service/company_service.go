@@ -6,5 +6,6 @@ import (
 
 type CompanyService interface {
 	Create(request model.CreateCompanyRequest) (response model.CreateCompanyResponse)
+	Detail(id string) (responses []model.ShowCompanyresponse)
 	List() (responses []model.GetCompanyresponse)
 }

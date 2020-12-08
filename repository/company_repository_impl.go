@@ -60,3 +60,30 @@ func (repository *companyRepositoryImpl) FindAll() (companies []entity.Company) 
 
 	return companies
 }
+
+func (repository *companyRepositoryImpl) Show(id string) (companies []entity.Company) {
+	ctx, cancel := config.NewMongoContext()
+	defer cancel()
+
+	// cursor, err := repository.Collection.Find(ctx, bson.M{})
+	cursor, err := repository.Collection.Find(ctx, bson.M{"_id": id})
+	exception.PanicIfNeeded(err)
+
+	var documents []bson.M
+	err = cursor.All(ctx, &documents)
+	exception.PanicIfNeeded(err)
+
+	for _, document := range documents {
+		companies = append(companies, entity.Company{
+			Id:         document["_id"].(string),
+			Name:       document["name"].(string),
+			CreatedAt:  document["created_at"].(int64),
+			ModifiedAt: document["modified_at"].(int64),
+			CreatedBy:  document["created_by"].(string),
+			ModifiedBy: document["modified_by"].(string),
+			IsDeleted:  document["is_deleted"].(bool),
+		})
+	}
+
+	return companies
+}
